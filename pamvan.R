@@ -1,5 +1,8 @@
 #Paddlefish Metapopulation Viability Analysis (PAMVAN)
-#load functions
+setwd("/Users/HenryHershey/Desktop/pamvan/")
+directory = getwd()
+outdir    = paste(directory,"/output/", sep="")
+source(paste(directory, "/source/FunctionSourcer.R", sep =''))
 
 
 #Variables:
@@ -42,6 +45,8 @@ colnames(abund)=c("N","Res","T")
 #lapply(pop,function(x) hist(x[,2]))
 
 #visualize abund over time
+pdf(paste(outdir,"pamvan_out.pdf",sep=""))
 plot(NA,xlim=c(0,starts$nt+1),ylim=c(0,max(abund$N+100,na.rm=T)))
 lapply(1:4,function(x) lines(abund$N[abund$Res==x]~abund$T[abund$Res==x],col=x))
 legend("topleft",title="reservoir",fill=1:4,legend=c(1:4))
+dev.off()
