@@ -6,18 +6,19 @@ source(paste(directory, "/source/FunctionSourcer.R", sep =''))
 library(reshape2)
 library(plyr)
 
-#set up starting parameters
-
 starts = list(
-  popinit = 300, #initial pop size in each res
-  nt = 100, #number of time steps
-  MA = .2, #adult mortality (Rider 2011)
-  MJ = .6, #juvenile mortality
-  R = 1.5, #average recruitment
-  Rvar = 0.02,#recruitment variability
-  nres = 4, #number of reservoir segments
-  pdown = .5, #probability of downstream dispersal by age 0
-  pup = .9 #probability of upstream passage by mature adults
+  popinit = 500, #initial pop size in each res
+  nt = 100,      #number of time steps
+  MA = .29,       #adult mortality (Rider 2011)
+  MJ = .5,       #juvenile mortality
+  R = 2,      #average recruitment (don't go above 2.2)
+  Rvar = 0.09,
+  dens = T,
+  K = 500,
+  #recruitment variability
+  nres = 4,      #number of reservoir segments
+  pdown = .5,    #probability of returning downstream after upstream passage (or dispersing downstream as age 0) immature fish don't move
+  pup = c(1,1,1,0.00000001)       #probability of upstream passage by mature adults
 )
 #hist(ages)
 
@@ -34,6 +35,11 @@ plot(NA,xlim=c(0,starts$nt+1),ylim=c(0,max(abund$N+100,na.rm=T)))
 lapply(1:4,function(x) lines(abund$N[abund$Res==x]~abund$T[abund$Res==x],col=x))
 legend("topleft",title="reservoir",fill=1:4,legend=c(1:4))
 #dev.off()
+       
+ 
+       
+       
+       
 
 #now, run 100 simulations with some variability in hydrology (recruitment) and see how many of the
 #simulations result in a crashed population
